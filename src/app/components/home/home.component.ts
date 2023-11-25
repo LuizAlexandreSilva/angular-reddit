@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RedditService } from '../../services/reddit.service';
 
 @Component({
   selector: 'app-home',
@@ -11,8 +12,15 @@ import { FormsModule } from '@angular/forms';
 })
 export class HomeComponent {
   searchString = '';
+  loading = false;
+
+  constructor(private redditService: RedditService) {}
 
   onSearch() {
-    console.log(this.searchString);
+    this.loading = true;
+    this.redditService.getSubreddit(this.searchString).subscribe((response) => {
+      this.loading = false;
+      console.log(response);
+    });
   }
 }
