@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { RedditService } from '../../services/reddit.service';
 
 @Component({
@@ -14,13 +15,19 @@ export class HomeComponent {
   searchString = '';
   loading = false;
 
-  constructor(private redditService: RedditService) {}
+  constructor(private redditService: RedditService, private router: Router) {}
 
   onSearch() {
     this.loading = true;
     this.redditService.getSubreddit(this.searchString).subscribe((response) => {
       this.loading = false;
-      console.log(response);
+
+      if (response.data) {
+        this.router.navigate(
+          [`posts/${this.searchString.toLocaleLowerCase()}`],
+          { state: { data: response.data } }
+        );
+      }
     });
   }
 }
