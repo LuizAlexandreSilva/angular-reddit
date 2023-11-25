@@ -14,4 +14,10 @@ export class RedditService {
   getSubreddit(name: string) {
     return this.http.get<any>(`${this.baseUrl}/${name}.json`);
   }
+
+  getSubredditComments(subreddit: string, postId: string) {
+    return this.http.get<any>(
+      `${this.baseUrl}/${subreddit}/comments/${postId}.json`
+    );
+  }
 }
